@@ -43,9 +43,7 @@ const SignIn: React.FC = () => {
   const passwordInputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
 
-  const { signIn, user } = useAuth();
-
-  console.log(user);
+  const { signIn } = useAuth();
 
   const handleSignIn = useCallback(
     async (data: SignInFormData) => {
@@ -58,20 +56,12 @@ const SignIn: React.FC = () => {
           password: Yup.string().required('Senha é obrigatória'),
         });
 
-        console.log('DATA');
-        console.log(data);
-
-        // await schema.validate(data, { abortEarly: false });
-
-        console.log('DATA VALIDADA');
-        console.log(data);
+        await schema.validate(data, { abortEarly: false });
 
         await signIn({
           email: data.email,
           password: data.password,
         });
-        console.log('DATA LOGGED');
-        console.log(data);
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -121,7 +111,7 @@ const SignIn: React.FC = () => {
               <Input
                 ref={passwordInputRef}
                 secureTextEntry
-                name="password "
+                name="password"
                 icon="lock"
                 placeholder="Senha"
                 returnKeyType="send"
